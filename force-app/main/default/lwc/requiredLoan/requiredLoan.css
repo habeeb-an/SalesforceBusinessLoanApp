@@ -1,0 +1,25 @@
+.container {
+    max-width: 800px; 
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid black;
+}
+
+.black-text {
+    color: black;
+    font-size: 24px; 
+    margin-bottom: 5px;
+}
+.standard-font {
+    color: black;
+    font-size: 16px; 
+    margin-bottom: 5px;
+
+}
+.text{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+

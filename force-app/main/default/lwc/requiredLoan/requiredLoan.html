@@ -1,0 +1,12 @@
+<template>
+    <div class="container">
+        <h1 class="black-text">Business Loan Application</h1>
+        <lightning-input type="text" label="Company Name" placeholder="Company Name" value={companyName} onchange={handleCompanyNameChange}></lightning-input>
+        <lightning-input type="number" label="Year Established" value={yearEstablished} onchange={handleYearEstablishedChange}></lightning-input>
+        <lightning-input type="number" label="Loan Amount" onchange={handleLoanAmountChange}></lightning-input>
+        <lightning-button class="text" label="Calculate Eligibility" onclick={calculateEligibility}></lightning-button>
+        <h1 class="standard-font">{companyName}, established in {yearEstablished}, has a {loanEligibility}% eligibility for a {loanAmount} loan.</h1>
+        <p class="standard-font">Profit/Loss Summary:</p>
+        <lightning-datatable data={financialData} columns={columns} key-field="id"></lightning-datatable>
+    </div>
+</template>
