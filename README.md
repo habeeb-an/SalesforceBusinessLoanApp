@@ -18,6 +18,13 @@ This project is a Salesforce Lightning Web Component (LWC) that displays a form 
 - Lightning Web Components
 - Apex
 
+Here's an example of the ```force-app/main/default``` directory structure:
+
+
+- ```force-app/main/default/lwc/``` - Lightning web component bundles 
+
+- ```force-app/main/default/classes/``` - Apex classes
+
 
 ## Demo
 ![image](https://github.com/habeeb-an/SalesforceBusinessLoanApp/assets/117254052/22ded097-984c-489f-816b-bde333eaad33)
