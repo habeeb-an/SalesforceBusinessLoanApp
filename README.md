@@ -18,6 +18,11 @@ This project is a Salesforce Lightning Web Component (LWC) that displays a form 
 - Lightning Web Components
 - Apex
 
+
+## Demo
+![image](https://github.com/habeeb-an/SalesforceBusinessLoanApp/assets/117254052/22ded097-984c-489f-816b-bde333eaad33)
+
+
 ## Development Process
 
 The app was developed by pushing source to my org with Salesforce DX.
