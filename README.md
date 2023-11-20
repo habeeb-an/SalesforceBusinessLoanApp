@@ -1,14 +1,35 @@
-# Salesforce DX Project: Next Steps
+# Loan Eligibility App
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+This project is a Salesforce Lightning Web Component (LWC) that displays a form for entering a loan amount and a table that displays the profit/loss summary and asset value month-wise for a year. The table data is fetched from a custom object named MonthlyFinancialData which contains fields Profit_Loss_Summary__c and AssetValue__c.
 
-## How Do You Plan to Deploy Your Changes?
+## Features
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+- Input loan amount and business details
+- Calculates eligibility percentage 
+- Monthly financial data stored in custom objects
+- Apex for server-side eligibility logic
+- Lightning Web Component UI
 
-## Configure Your Salesforce DX Project
 
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
+## Technologies
+
+- Salesforce DX
+- Visual Studio Code
+- Lightning Web Components
+- Apex
+
+## Development Process
+
+The app was developed by pushing source to my org with Salesforce DX.
+
+
+## Resources
+
+- [Apex Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.224.0.apexcode.meta/apexcode)
+- [Lightning Web Components Dev Guide](https://developer.salesforce.com/docs/component-library/documentation/lwc) 
+- [Salesforce Extensions for VS Code](https://developer.salesforce.com/tools/vscode/)
+
+Let me know if you would like me to expand or modify any part of this example README!
 
 ## Read All About It
 
