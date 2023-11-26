@@ -40,34 +40,34 @@ Boolean standardLayout, Boolean paymentsOnly */
     public Map<String, Object> getProfitAndLoss() {
         try {
             String accessToken = AuthUtil.getAccessToken();
-            String tenantId = this.getConnections();
+            XeroCallout xero=new XeroCallout();
+            String tenantId = xero.getConnections();
+            System.debug('getProfitAndLossTenantid'+tenantId);
             HttpRequest req = new HttpRequest();
 
             req.setMethod('GET');
 
-            Date fromDate ;
-            Date toDate ;
+            Date fromDate = Date.valueOf('2022-01-01');
+            Date toDate = Date.valueOf('2022-12-01');
             Integer periods = 11;
             String timeframe = 'MONTH';
-            String trackingCategoryID = null;
-            String trackingCategoryID2 = null;
-            String trackingOptionID = null;
-            String trackingOptionID2 = null;
-            Boolean standardLayout = true;
-            Boolean paymentsOnly = false;
+    
+        /*
+        '&trackingCategoryID=' + trackingCategoryID +
+        '&trackingCategoryID2=' + trackingCategoryID2 +
+        '&trackingOptionID=' + trackingOptionID +
+        '&trackingOptionID2=' + trackingOptionID2 +
+        '&standardLayout=' + String.valueOf(standardLayout) +
+        '&paymentsOnly=' + String.valueOf(paymentsOnly);
+                             */
 
             String params = 'fromDate=' + String.valueOf(fromDate) +
                             '&toDate=' + String.valueOf(toDate) +
                             '&periods=' + String.valueOf(periods) +
-                            '&timeframe=' + timeframe +
-                            '&trackingCategoryID=' + trackingCategoryID +
-                            '&trackingCategoryID2=' + trackingCategoryID2 +
-                            '&trackingOptionID=' + trackingOptionID +
-                            '&trackingOptionID2=' + trackingOptionID2 +
-                            '&standardLayout=' + String.valueOf(standardLayout) +
-                            '&paymentsOnly=' + String.valueOf(paymentsOnly);
+                            '&timeframe=' + timeframe ;
 
             req.setEndpoint('https://api.xero.com/api.xro/2.0/Reports/ProfitAndLoss' + '?' + params);
+            // req.setEndpoint('https://api.xero.com/api.xro/2.0/Reports/ProfitAndLoss?fromDate=2022-01-01&toDate=2022-12-01&periods=11&timeframe=MONTH');
 
             req.setHeader('Authorization', 'Bearer ' + accessToken);
             req.setHeader('xero-tenant-id', tenantId);
