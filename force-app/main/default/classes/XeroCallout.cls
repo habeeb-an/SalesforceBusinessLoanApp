@@ -25,7 +25,7 @@ public with sharing class XeroCallout {
                     return null;
                 }
             } else {
-                System.debug('Error in API request. Status Code: ' + res.getStatusCode());
+                System.debug('Error in getting tenantId request. Status Code: ' + res.getStatusCode());
                 return null;
             }
         } catch (Exception e) {
@@ -33,33 +33,20 @@ public with sharing class XeroCallout {
             return null;
         }
     }
-/*Date fromDate, Date toDate, Integer periods, String timeframe,
-String trackingCategoryID, String trackingCategoryID2,
-String trackingOptionID, String trackingOptionID2,
-Boolean standardLayout, Boolean paymentsOnly */
     public Map<String, Object> getProfitAndLoss() {
-        try {
+        
             String accessToken = AuthUtil.getAccessToken();
             XeroCallout xero=new XeroCallout();
             String tenantId = xero.getConnections();
-            System.debug('getProfitAndLossTenantid'+tenantId);
+            System.debug('getProfitAndLossTenantid='+tenantId);
+        try {
             HttpRequest req = new HttpRequest();
-
             req.setMethod('GET');
 
             Date fromDate = Date.valueOf('2022-01-01');
             Date toDate = Date.valueOf('2022-12-01');
             Integer periods = 11;
             String timeframe = 'MONTH';
-    
-        /*
-        '&trackingCategoryID=' + trackingCategoryID +
-        '&trackingCategoryID2=' + trackingCategoryID2 +
-        '&trackingOptionID=' + trackingOptionID +
-        '&trackingOptionID2=' + trackingOptionID2 +
-        '&standardLayout=' + String.valueOf(standardLayout) +
-        '&paymentsOnly=' + String.valueOf(paymentsOnly);
-                             */
 
             String params = 'fromDate=' + String.valueOf(fromDate) +
                             '&toDate=' + String.valueOf(toDate) +
@@ -67,7 +54,6 @@ Boolean standardLayout, Boolean paymentsOnly */
                             '&timeframe=' + timeframe ;
 
             req.setEndpoint('https://api.xero.com/api.xro/2.0/Reports/ProfitAndLoss' + '?' + params);
-            // req.setEndpoint('https://api.xero.com/api.xro/2.0/Reports/ProfitAndLoss?fromDate=2022-01-01&toDate=2022-12-01&periods=11&timeframe=MONTH');
 
             req.setHeader('Authorization', 'Bearer ' + accessToken);
             req.setHeader('xero-tenant-id', tenantId);
@@ -88,37 +74,46 @@ Boolean standardLayout, Boolean paymentsOnly */
             return null;
         }
     }
-}
+
 
    
-   /*
-    public static Map<String, Object>  getBalanceSheet(Date date, Integer periods, 
-                                                    String timeframe, String trackingOptionID1, 
-                                                    String trackingOptionID2,
-                                                    boolean standardLayout, boolean paymentsOnly) {
+   
+public Map<String, Object>  getBalanceSheet() {
+            
+        String accessToken = AuthUtil.getAccessToken();
+        XeroCallout xero=new XeroCallout();
+        String tenantId = xero.getConnections();
+    try {  
+        Date balsheetDate = Date.valueOf('2022-12-01'); 
+        Integer balsheetPeriods = 11;
+        String balsheetTimeframe = 'MONTH';
         
-    String accessToken = AuthUtil.getAccessToken();
-    
-    HttpRequest req = new HttpRequest();
-    req.setEndpoint('https://api.xero.com/api.xro/2.0/Reports/BalanceSheet');
+        String params = 'date=' + String.valueOf(balsheetDate) + 
+                        '&periods=' + balsheetPeriods + 
+                        '&timeframe=' + balsheetTimeframe;
+        
+        HttpRequest req = new HttpRequest();
+        req.setMethod('GET');   
+        req.setEndpoint('https://api.xero.com/api.xro/2.0/Reports/BalanceSheet?' + params);
+        req.setHeader('Authorization', 'Bearer ' + accessToken);
+        req.setHeader('xero-tenant-id', tenantId);
+        req.setHeader('Content-Type', 'application/json');
+        
 
-    req.setHeader('Authorization', 'Bearer ' + accessToken);
-    req.setHeader('xero-tenant-id', tenantId);
-    req.setHeader('Content-Type', 'application/json');
+        HttpResponse res = new Http().send(req);
+        
+        if (res.getStatusCode() == 200) {
+            Map<String, Object> responseBody = (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
+            System.debug('BalanceSheet report=' + responseBody);
+            return responseBody;
+        } else {
+            System.debug('Error in BalanceSheet API request. Status Code: ' + res.getStatusCode());
+            return null;
+        }
+    } catch (Exception e) {
+        System.debug('Exception:Failed at BalanceSheet' + e.getMessage());
+        return null;
+    }
 
-    req.setParam('date', String.valueOf(date));
-    req.setParam('periods', periods);
-    req.setParam('timeframe', timeframe);
-    req.setParam('trackingOptionID1', trackingOptionID1); 
-    req.setParam('trackingOptionID2', trackingOptionID2);
-    req.setParam('standardLayout', standardLayout);
-    req.setParam('paymentsOnly', paymentsOnly);
-
-    HttpResponse res = new Http().send(req);
-    
-    Map<String, Object> responseBody = (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
-    System.debug('BalanceSheet report=' + responseBody);
-
-    return responseBody;
 }
-*/
+}
