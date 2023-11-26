@@ -1,83 +1,95 @@
 public with sharing class XeroCallout {
-    
-    public String getConnections() {
-     try {
-        String accessToken = AuthUtil.getAccessToken();
-        System.debug('Access Token: ' + accessToken);
-        Http h = new Http();
 
-        HttpRequest req = new HttpRequest();
-        req.setEndpoint('https://api.xero.com/connections');
-        req.setMethod('GET');
-        req.setHeader('Authorization', 'Bearer ' + accessToken);
-        HttpResponse res = h.send(req);
-        
-        if (res.getStatusCode() == 200) {
-            List<Object> connections = (List<Object>) JSON.deserializeUntyped(res.getBody());
-            Map<String, Object> connection = (Map<String, Object>) connections[0];
-            String tenantId = (String) connection.get('tenantId');
-    
-            if (tenantId != null) {
-                System.debug('Tenant ID:' + tenantId);
-                return tenantId;
+    public String getConnections() {
+        try {
+            String accessToken = AuthUtil.getAccessToken();
+            System.debug('Access Token:= ' + accessToken);
+            Http h = new Http();
+
+            HttpRequest req = new HttpRequest();
+            req.setEndpoint('https://api.xero.com/connections');
+            req.setMethod('GET');
+            req.setHeader('Authorization', 'Bearer ' + accessToken);
+            HttpResponse res = h.send(req);
+
+            if (res.getStatusCode() == 200) {
+                List<Object> connections = (List<Object>) JSON.deserializeUntyped(res.getBody());
+                Map<String, Object> connection = (Map<String, Object>) connections[0];
+                String tenantId = (String) connection.get('tenantId');
+
+                if (tenantId != null) {
+                    System.debug('Tenant ID:' + tenantId);
+                    return tenantId;
+                } else {
+                    System.debug('Tenant ID not available in response');
+                    return null;
+                }
             } else {
-                System.debug('Tenant ID not available in response');
+                System.debug('Error in API request. Status Code: ' + res.getStatusCode());
                 return null;
             }
-        } else {
-            System.debug('Error in API request. Status Code: ' + res.getStatusCode());
+        } catch (Exception e) {
+            System.debug('Error getting access token: ' + e.getMessage());
             return null;
         }
-     } catch (Exception e) {
-        System.debug('Error getting access token: ' + e.getMessage());
-        return null;
     }
-    }
+/*Date fromDate, Date toDate, Integer periods, String timeframe,
+String trackingCategoryID, String trackingCategoryID2,
+String trackingOptionID, String trackingOptionID2,
+Boolean standardLayout, Boolean paymentsOnly */
+    public Map<String, Object> getProfitAndLoss() {
+        try {
+            String accessToken = AuthUtil.getAccessToken();
+            String tenantId = this.getConnections();
+            HttpRequest req = new HttpRequest();
 
-    public Map<String,Object> getProfitAndLoss(Date fromDate, Date toDate, Integer periods, String timeframe,
-                                                    String trackingCategoryID, String trackingCategoryID2,
-                                                    String trackingOptionID, String trackingOptionID2,
-                                                    Boolean standardLayout, Boolean paymentsOnly) {
-    try {
-        String accessToken = AuthUtil.getAccessToken();
-        XeroCallout xero = new XeroCallout();
-        HttpRequest req = new HttpRequest();
-        String tenantId = xero.getConnections();
-        req.setMethod('GET');
+            req.setMethod('GET');
 
-        String params = 'fromDate=' + String.valueOf(fromDate) +
-                        '&toDate=' + String.valueOf(toDate) +
-                        '&periods=' + String.valueOf(periods) +
-                        '&timeframe=' + timeframe +
-                        '&trackingCategoryID=' + trackingCategoryID +
-                        '&trackingCategoryID2=' + trackingCategoryID2 +
-                        '&trackingOptionID=' + trackingOptionID +
-                        '&trackingOptionID2=' + trackingOptionID2 +
-                        '&standardLayout=' + String.valueOf(standardLayout) +
-                        '&paymentsOnly=' + String.valueOf(paymentsOnly);
+            Date fromDate ;
+            Date toDate ;
+            Integer periods = 11;
+            String timeframe = 'MONTH';
+            String trackingCategoryID = null;
+            String trackingCategoryID2 = null;
+            String trackingOptionID = null;
+            String trackingOptionID2 = null;
+            Boolean standardLayout = true;
+            Boolean paymentsOnly = false;
 
-        req.setEndpoint('https://api.xero.com/api.xro/2.0/Reports/ProfitAndLoss' + '?' + params);
+            String params = 'fromDate=' + String.valueOf(fromDate) +
+                            '&toDate=' + String.valueOf(toDate) +
+                            '&periods=' + String.valueOf(periods) +
+                            '&timeframe=' + timeframe +
+                            '&trackingCategoryID=' + trackingCategoryID +
+                            '&trackingCategoryID2=' + trackingCategoryID2 +
+                            '&trackingOptionID=' + trackingOptionID +
+                            '&trackingOptionID2=' + trackingOptionID2 +
+                            '&standardLayout=' + String.valueOf(standardLayout) +
+                            '&paymentsOnly=' + String.valueOf(paymentsOnly);
 
-        req.setHeader('Authorization', 'Bearer ' + accessToken);
-        req.setHeader('xero-tenant-id', tenantId);
-        req.setHeader('Content-Type', 'application/json');
+            req.setEndpoint('https://api.xero.com/api.xro/2.0/Reports/ProfitAndLoss' + '?' + params);
 
-        HttpResponse res = new Http().send(req);
+            req.setHeader('Authorization', 'Bearer ' + accessToken);
+            req.setHeader('xero-tenant-id', tenantId);
+            req.setHeader('Content-Type', 'application/json');
 
-        if (res.getStatusCode() == 200) {
-            Map<String, Object> responseBody = (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
-            System.debug('Profit/Loss report=' + responseBody);
-            return responseBody;
-        } else {
-            System.debug('Error in API request. Status Code: ' + res.getStatusCode());
+            HttpResponse res = new Http().send(req);
+
+            if (res.getStatusCode() == 200) {
+                Map<String, Object> responseBody = (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
+                System.debug('Profit/Loss report=' + responseBody);
+                return responseBody;
+            } else {
+                System.debug('Error in API request. Status Code: ' + res.getStatusCode());
+                return null;
+            }
+        } catch (Exception e) {
+            System.debug('Exception:Failed at Profit/Loss' + e.getMessage());
             return null;
         }
-    } catch (Exception e) {
-        System.debug('Exception:Failed at Profit/Loss' + e.getMessage());
-        return null;
-    }                                    
+    }
 }
-}
+
    
    /*
     public static Map<String, Object>  getBalanceSheet(Date date, Integer periods, 
