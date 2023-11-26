@@ -25,6 +25,7 @@ export default class RequiredLoan extends LightningElement {
         }
     }
 
+    
     handleLoanAmountChange(event) {
         this.loanAmount = event.target.value;
     }
@@ -36,9 +37,10 @@ export default class RequiredLoan extends LightningElement {
         this.yearEstablished = event.target.value;
       }
 
+
     calculateEligibility() {
-        let totalProfit = this.financialData.reduce((total, month) => total + month.Profit_Loss_Summary__c, 0);
-        let totalAssetValue = this.financialData.reduce((total, month) => total + month.AssetValue__c, 0);
+        let totalProfit =this.financialData.reduce((total, month) => total + month.Profit_Loss_Summary__c, 0);
+        let totalAssetValue= this.financialData.reduce((total, month) => total + month.AssetValue__c, 0);
         calculateLoanEligibility({ loanAmount: this.loanAmount, totalProfit: totalProfit, totalAssetValue: totalAssetValue })
             .then(result => {
                 this.loanEligibility = result;
