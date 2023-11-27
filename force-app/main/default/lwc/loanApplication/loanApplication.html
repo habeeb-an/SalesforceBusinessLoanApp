@@ -1,0 +1,59 @@
+<template>
+    <lightning-card title="Loan Application Manager" >
+        <div class="slds-m-around_medium">
+            <template if:true={companies}>
+                <lightning-combobox name="company" label="Company"
+                                    placeholder="Select Company"
+                                    options={companyOptions}
+                                    onchange={handleCompanyChange}>
+                </lightning-combobox>
+            </template>
+
+            <lightning-button label="Add New Company" onclick={showAddCompanyForm} class="slds-m-top_small"></lightning-button>
+<!-- Xero popup -->
+            <lightning-button label="Xero Registered Company" onclick={handleXeroCompany} class="slds-m-top_small"></lightning-button>
+           
+            <template if:true={isXeroCompanySelected}>
+            <a href="https://resourceful-panda-19i2i-dev-ed.trailblaze.my.salesforce.com/services/auth/oauth/Xero" target="_blank">
+                <lightning-button label="Connect to Xero" class="slds-m-top_small"></lightning-button>
+            </a>
+                <lightning-combobox name="xeroCompany" label="Xero Company"
+                                    placeholder="Select Xero Company"
+                                    options={companyOptions}
+                                    onchange={handleXeroCompanyChange}>
+                </lightning-combobox>
+                <lightning-button label="Sync Balance Sheet" onclick={syncBalanceSheet} class="slds-m-top_small"></lightning-button>
+                <lightning-button variant="destructive" label="Cancel" title="Cancel" 
+                onclick={hideXeroCompanySection} 
+                class="slds-m-top_small">
+            </lightning-button>
+            </template>
+<!-- Xero popup ends -->
+        
+            <template if:true={isAddCompanyFormVisible}>
+                <div class="slds-m-top_medium">
+                    <lightning-input label="Company Name" name="newCompanyName" onchange={handleNewCompanyNameChange}></lightning-input>
+                    <lightning-input label="Industry" name="industry" onchange={handleIndustryChange}></lightning-input>
+                    <lightning-input label="Contact Information" name="contactInfo" onchange={handleContactInfoChange}></lightning-input>
+                </div>
+                <lightning-button variant="brand" label="Save Company" title="Save" onclick={saveNewCompany} class="slds-m-top_small"></lightning-button>
+                <lightning-button variant="destructive" label="Cancel" title="Cancel" onclick={hideAddCompanyForm} class="slds-m-top_small"></lightning-button>
+            </template>
+            
+
+            <template if:true={banks}>
+                <lightning-combobox name="bank" label="Bank"
+                                    placehpolder="Select Bank"
+                                    options={bankOptions}
+                                    onchange={handleBankChange}>
+                </lightning-combobox>
+            </template>
+            <lightning-input type="number" label="Loan Amount"
+                             name="amount" onchange={handleAmountChange}>
+            </lightning-input>
+            <lightning-button variant="brand" label="Submit Application"
+                              title="Submit" onclick={submitApplication}
+                              class="slds-m-top_medium"></lightning-button>
+        </div>
+    </lightning-card>
+</template>

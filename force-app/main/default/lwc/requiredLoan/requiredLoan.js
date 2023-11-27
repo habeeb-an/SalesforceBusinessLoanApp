@@ -24,8 +24,7 @@ export default class RequiredLoan extends LightningElement {
             this.financialData = undefined;
         }
     }
-
-    
+   
     handleLoanAmountChange(event) {
         this.loanAmount = event.target.value;
     }

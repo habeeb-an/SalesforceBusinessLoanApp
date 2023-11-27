@@ -33,7 +33,8 @@ public with sharing class XeroCallout {
             return null;
         }
     }
-    public Map<String, Object> getProfitAndLoss() {
+    @AuraEnabled
+    public static Map<String, Object> getProfitAndLoss() {
         
             String accessToken = AuthUtil.getAccessToken();
             XeroCallout xero=new XeroCallout();
@@ -66,19 +67,16 @@ public with sharing class XeroCallout {
                 System.debug('Profit/Loss report=' + responseBody);
                 return responseBody;
             } else {
-                System.debug('Error in API request. Status Code: ' + res.getStatusCode());
+                System.debug('Error in Profit/Loss API request. Status Code: ' + res.getStatusCode());
                 return null;
             }
         } catch (Exception e) {
             System.debug('Exception:Failed at Profit/Loss' + e.getMessage());
             return null;
         }
-    }
-
-
-   
-   
-public Map<String, Object>  getBalanceSheet() {
+    }   
+@AuraEnabled  
+public static Map<String, Object>  getBalanceSheet() {
             
         String accessToken = AuthUtil.getAccessToken();
         XeroCallout xero=new XeroCallout();
@@ -104,7 +102,7 @@ public Map<String, Object>  getBalanceSheet() {
         
         if (res.getStatusCode() == 200) {
             Map<String, Object> responseBody = (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
-            System.debug('BalanceSheet report=' + responseBody);
+            System.debug('BalanceSheet report:' + responseBody);
             return responseBody;
         } else {
             System.debug('Error in BalanceSheet API request. Status Code: ' + res.getStatusCode());

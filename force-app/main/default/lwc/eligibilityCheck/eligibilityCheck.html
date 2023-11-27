@@ -1,0 +1,22 @@
+<template>
+    <lightning-card title="Loan Applications" icon-name="standard:account">
+        <div class="slds-m-around_medium">
+            <template if:true={companies}>
+                <lightning-combobox name="company" label="Company"
+                                    placeholder="Select Company"
+                                    options={companyOptions}
+                                    onchange={handleCompanyChange}>
+                </lightning-combobox>
+            </template>
+            <template if:true={banks}>
+                <lightning-combobox name="bank" label="Bank"
+                                    placeholder="Select Bank"
+                                    options={bankOptions}
+                                    onchange={handleBankChange}>
+                </lightning-combobox>
+            </template>
+            <lightning-button label="Apply Filters" onclick={applyFilters} class="slds-m-top_small"></lightning-button>
+        </div>
+        <lightning-datatable data={filteredApplications} columns={columns} key-field="id" class="slds-m-around_medium"></lightning-datatable>
+    </lightning-card>
+</template>
