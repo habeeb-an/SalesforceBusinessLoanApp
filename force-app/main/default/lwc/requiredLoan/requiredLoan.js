@@ -1,52 +1,48 @@
 import { LightningElement, track, wire } from 'lwc';
-import fetchFinancialData from '@salesforce/apex/LoanEligibilityCalculator.fetchFinancialData';
-import calculateLoanEligibility from '@salesforce/apex/LoanEligibilityCalculator.calculateLoanEligibility';
+
+import getCompanyMonthlyRecords from '@salesforce/apex/XeroController.getCompanyMonthlyRecords';
+import getCompanies from '@salesforce/apex/LoanApplicationController.getCompanies';
 
 export default class RequiredLoan extends LightningElement {
-    @track loanAmount = 0;
-    @track companyName='CompanyName';
-    @track yearEstablished='(year)';
-    @track loanEligibility = 0; 
-    @track financialData = [];
-    @track error;
+    @track selectedCompanyId;
+    @track monthlyRecords =[];
+    @track companyOptions=[];
     @track columns = [
-        { label: 'Month', fieldName: 'Name' },
-        { label: 'Profit/Loss Summary', fieldName: 'Profit_Loss_Summary__c', type: 'currency' },
-        { label: 'Asset Value', fieldName: 'AssetValue__c', type: 'currency' }
-    ];
-    @wire(fetchFinancialData)
-    wiredFinancialData({ error, data }) {
+            { label: 'Year', fieldName: 'Year__c', type: 'number' },
+            { label: 'Month', fieldName: 'Name'},
+            { label: 'Profit/Loss Summary', fieldName: 'Profit_Loss_Summary__c', type: 'currency' },
+            { label: 'Asset Value', fieldName: 'AssetValue__c', type: 'currency' }
+        ];
+
+    @wire(getCompanies)
+    wiredCompanies({ error, data }) {
         if (data) {
-            this.financialData = data;
-            this.error = undefined;
+            this.companyOptions = data.map(company => {
+                return { label: company.Name, value: company.Id };
+            });
         } else if (error) {
-            this.error = error;
-            this.financialData = undefined;
+            console.log('data-table: error when getting companies:',financialData);
+
         }
     }
-   
-    handleLoanAmountChange(event) {
-        this.loanAmount = event.target.value;
-    }
-    handleCompanyNameChange(event) {
-        this.companyName = event.target.value;
-      }
-    
-    handleYearEstablishedChange(event) {
-        this.yearEstablished = event.target.value;
+
+    handleCompanyChange(event) {
+        this.selectedCompanyId = event.target.value;
+        this.fetchMonthlyRecords();
       }
 
 
-    calculateEligibility() {
-        let totalProfit =this.financialData.reduce((total, month) => total + month.Profit_Loss_Summary__c, 0);
-        let totalAssetValue= this.financialData.reduce((total, month) => total + month.AssetValue__c, 0);
-        calculateLoanEligibility({ loanAmount: this.loanAmount, totalProfit: totalProfit, totalAssetValue: totalAssetValue })
+    fetchMonthlyRecords() {
+        getCompanyMonthlyRecords({ companyId: this.selectedCompanyId })
             .then(result => {
-                this.loanEligibility = result;
-                console.log('result of loan eligiibilty',result);
+                this.monthlyRecords = result;
+                console.log('monthlyRecords:',JSON.stringify(monthlyRecords))
             })
             .catch(error => {
-                this.error = error;
+            console.log('data-table: error when getting monthly records:',error);
+
             });
     }
 }
+   
+   

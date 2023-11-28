@@ -13,7 +13,8 @@ export default class EligibilityCheck extends LightningElement {
         { label: 'Application Name', fieldName: 'Name', type: 'text' },
         { label: 'Company Name', fieldName: 'CompanyName', type: 'text' },
         { label: 'Bank Name', fieldName: 'BankName', type: 'text' },
-        { label: 'Loan Amount', fieldName: 'Requested_Amount__c', type: 'currency' },]
+        { label: 'Loan Amount', fieldName: 'Requested_Amount__c', type: 'currency' },
+        { label: 'Status', fieldName: 'Status__c', type: 'text' },]
 
     @wire(getCompanies)
     companies;

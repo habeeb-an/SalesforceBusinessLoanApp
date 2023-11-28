@@ -14,7 +14,8 @@ public with sharing class XeroCallout {
 
             if (res.getStatusCode() == 200) {
                 List<Object> connections = (List<Object>) JSON.deserializeUntyped(res.getBody());
-                Map<String, Object> connection = (Map<String, Object>) connections[0];
+                System.debug('connections from tenants:= ' + connections);
+                Map<String, Object> connection = (Map<String, Object>) connections[1];
                 String tenantId = (String) connection.get('tenantId');
 
                 if (tenantId != null) {

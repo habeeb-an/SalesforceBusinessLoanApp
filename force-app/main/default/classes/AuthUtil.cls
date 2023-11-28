@@ -3,7 +3,7 @@ public with sharing class AuthUtil {
         if (Schema.sObjectType.AuthProvider.isAccessible()) {
             return [SELECT Id, DeveloperName FROM AuthProvider WHERE DeveloperName='Xero'];
         } else {
-            System.debug('Current user does not have access to AuthProvider.');
+            System.debug('User does not have access to AuthProvider.');
             return null;
         }
     }
