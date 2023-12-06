@@ -1,13 +1,16 @@
 # Loan Eligibility App
 
-This project is a Salesforce Lightning Web Component (LWC) that displays a form for entering a loan amount and a table that displays the profit/loss summary and asset value month-wise for a year. The table data is fetched from a custom object named MonthlyFinancialData which contains fields Profit_Loss_Summary__c and AssetValue__c.
-
+Designed and implemented a comprehensive Salesforce business app for loan management, integrating essential features to streamline the loan application process and enhance financial visibility.
 ## Features
 
-- Input loan amount and business details
-- Calculates eligibility percentage 
-- Monthly financial data stored in custom objects
+- app for streamlined loan management, emphasizing speciﬁc bank eligibility criteria based on business balance sheets.
+- Implemented a robust data model with Custom objects, Master-detail relationships, Junction objects, and Roll-up summaries for efﬁcient data organization.
+- Integrated XERO API with REST HTTP Method to provide real-time balance sheets for loan eligibility assessment.
 - Apex for server-side eligibility logic
+- Filtering options for loan applications based on business names and applied banks.
+- Provided users with ﬁnancial transparency by enabling access to asset values and proﬁt/loss statements for the
+last ﬁnancial year
+- Automated loan pool updates to dynamically calculate and reﬂect total bank lending based on issued loans.
 - Lightning Web Component UI
 
 
@@ -17,6 +20,8 @@ This project is a Salesforce Lightning Web Component (LWC) that displays a form 
 - Visual Studio Code
 - Lightning Web Components
 - Apex
+- SOQL
+- DML
 
 Here's an example of the ```force-app/main/default``` directory structure:
 
@@ -27,7 +32,8 @@ Here's an example of the ```force-app/main/default``` directory structure:
 
 
 ## Demo
-![image](https://github.com/habeeb-an/SalesforceBusinessLoanApp/assets/117254052/22ded097-984c-489f-816b-bde333eaad33)
+![image](https://github.com/habeeb-an/SalesforceBusinessLoanApp/assets/117254052/0bd32c5c-de93-499a-aa32-ddbfeed2f2d3)
+
 
 
 ## Development Process
